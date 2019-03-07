@@ -4,11 +4,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
-import com.google.gson.internal.GsonBuildConfig
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
-import java.util.*
+import com.google.gson.reflect.TypeToken
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,10 +38,12 @@ class MainActivity : AppCompatActivity() {
 
                 val gson = GsonBuilder().create()
 
-                val client = gson.fromJson(body,Client::class.java)
+                val listType = object : TypeToken<ResponseRest<Client>>() { }.type
+
+                val responseRest = gson.fromJson<ResponseRest<Client>>(body,listType)
 
                 runOnUiThread {
-                    recyclerView_main.adapter = MainAdapter(client)
+                    recyclerView_main.adapter = MainAdapter(responseRest)
                 }
             }
             override fun onFailure(call: Call, e: IOException) {
@@ -50,24 +53,3 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
-class Client(val data: Data)
-
-class Data(val client_fname: String,
-           val cl_tconsums: List<Cl_tconsum>,
-           val cl_treceipts: List<Cl_treceipt>)
-
-class Cl_tconsum(val consum_consum: Int,
-              val consum_cant: Int,
-              val consum_date: String,
-              val consum_state: String,
-              val client_client: Int)
-
-
-class Cl_treceipt(val receipt_receipt: Int,
-             val receipt_value: String,
-             val receipt_date: String,
-             val receipt_lastc: Int,
-             val receipt_pasc: Int,
-             val receipt_state: String,
-             val client_client: Int)

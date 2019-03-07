@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.client_row.view.*
 
-class MainAdapter(val client: Client): RecyclerView.Adapter<CustomViewHolder>(){
+class MainAdapter(val responseRest: ResponseRest<Client>): RecyclerView.Adapter<CustomViewHolder>(){
 
     //val client = listOf("alejo","david","julian","master pro")
 
     // number of items
     override fun getItemCount(): Int {
-        return client.data.cl_tconsums.count()
+        return responseRest.data.cl_tconsums.count()
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {
@@ -22,8 +22,8 @@ class MainAdapter(val client: Client): RecyclerView.Adapter<CustomViewHolder>(){
     }
 
     override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {
-        val clientConsumo = client.data.cl_tconsums.get(p1)
-        p0.itemView?.textView_name_client?.text = clientConsumo.consum_date
+        val clientConsumo = responseRest.data.cl_tconsums.get(p1)
+        p0.itemView?.textView_clientIdent?.text = clientConsumo.consum_date
     }
 
 }
